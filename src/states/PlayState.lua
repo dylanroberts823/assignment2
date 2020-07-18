@@ -32,6 +32,7 @@ function PlayState:enter(params)
     self.powerBrick = params.powerBrick
 
     self.recoverPoints = 5000
+    self.upgradePaddleScore = 100
 
     -- give ball random starting velocity
     --reset to make testing easier
@@ -199,6 +200,11 @@ function PlayState:update(dt)
             table.remove(self.balls)
           end
 
+          --If the paddle size is greater than 1, decrease the size by one
+          if self.paddle.size > 1 then
+            self.paddle.size = self.paddle.size - 1
+          end
+
           gStateMachine:change('serve', {
             paddle = self.paddle,
             bricks = self.bricks,
@@ -213,6 +219,7 @@ function PlayState:update(dt)
         end
       end
     end
+
     --update the location of the powerup if the powerBrick was removed
     if not self.powerBrick.inPlay then
       self.powerup:update(dt)
@@ -241,6 +248,17 @@ function PlayState:update(dt)
         brick:update(dt)
     end
 
+    -- if the score reaches the critical amount
+    if self.score >= self.upgradePaddleScore then
+      -- upgrade the paddle if it's not already at max
+      if self.paddle.size < 4 then
+        self.paddle.size = self.paddle.size + 1
+      end
+
+      --increase the upgrade paddle score according to the current size
+      self.upgradePaddleScore = self.score + self.paddle.size * 1000
+    end
+    
     if love.keyboard.wasPressed('escape') then
         love.event.quit()
     end
