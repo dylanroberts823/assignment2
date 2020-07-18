@@ -28,6 +28,7 @@ function PlayState:enter(params)
     self.highScores = params.highScores
     self.ball = params.ball
     self.level = params.level
+    self.powerup = params.powerup
 
     self.recoverPoints = 5000
 
@@ -66,7 +67,7 @@ function PlayState:update(dt)
         -- if we hit the paddle on its left side while moving left...
         if self.ball.x < self.paddle.x + (self.paddle.width / 2) and self.paddle.dx < 0 then
             self.ball.dx = -50 + -(8 * (self.paddle.x + self.paddle.width / 2 - self.ball.x))
-        
+
         -- else if we hit the paddle on its right side while moving right...
         elseif self.ball.x > self.paddle.x + (self.paddle.width / 2) and self.paddle.dx > 0 then
             self.ball.dx = 50 + (8 * math.abs(self.paddle.x + self.paddle.width / 2 - self.ball.x))
@@ -120,35 +121,35 @@ function PlayState:update(dt)
             -- we check to see if the opposite side of our velocity is outside of the brick;
             -- if it is, we trigger a collision on that side. else we're within the X + width of
             -- the brick and should check to see if the top or bottom edge is outside of the brick,
-            -- colliding on the top or bottom accordingly 
+            -- colliding on the top or bottom accordingly
             --
 
             -- left edge; only check if we're moving right, and offset the check by a couple of pixels
             -- so that flush corner hits register as Y flips, not X flips
             if self.ball.x + 2 < brick.x and self.ball.dx > 0 then
-                
+
                 -- flip x velocity and reset position outside of brick
                 self.ball.dx = -self.ball.dx
                 self.ball.x = brick.x - 8
-            
+
             -- right edge; only check if we're moving left, , and offset the check by a couple of pixels
             -- so that flush corner hits register as Y flips, not X flips
             elseif self.ball.x + 6 > brick.x + brick.width and self.ball.dx < 0 then
-                
+
                 -- flip x velocity and reset position outside of brick
                 self.ball.dx = -self.ball.dx
                 self.ball.x = brick.x + 32
-            
+
             -- top edge if no X collisions, always check
             elseif self.ball.y < brick.y then
-                
+
                 -- flip y velocity and reset position outside of brick
                 self.ball.dy = -self.ball.dy
                 self.ball.y = brick.y - 8
-            
+
             -- bottom edge if no X collisions or top collision, last possibility
             else
-                
+
                 -- flip y velocity and reset position outside of brick
                 self.ball.dy = -self.ball.dy
                 self.ball.y = brick.y + 16
@@ -225,7 +226,7 @@ function PlayState:checkVictory()
     for k, brick in pairs(self.bricks) do
         if brick.inPlay then
             return false
-        end 
+        end
     end
 
     return true

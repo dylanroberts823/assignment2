@@ -31,6 +31,10 @@ require 'src/Paddle'
 -- game states smoothly and avoid monolithic code in one file
 require 'src/StateMachine'
 
+-- the entitites in our game that alter the number of balls present, size of
+-- the paddles or the game state
+require 'src/Powerup'
+
 -- utility functions, mainly for splitting our sprite sheet into various Quads
 -- of differing sizes for paddles, balls, bricks, etc.
 require 'src/Util'

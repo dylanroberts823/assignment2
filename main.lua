@@ -13,7 +13,7 @@
 
     This version is built to more closely resemble the NES than
     the original Pong machines or the Atari 2600 in terms of
-    resolution, though in widescreen (16:9) so it looks nicer on 
+    resolution, though in widescreen (16:9) so it looks nicer on
     modern systems.
 
     Credit for graphics (amazing work!):
@@ -66,9 +66,10 @@ function love.load()
         ['paddles'] = GenerateQuadsPaddles(gTextures['main']),
         ['balls'] = GenerateQuadsBalls(gTextures['main']),
         ['bricks'] = GenerateQuadsBricks(gTextures['main']),
-        ['hearts'] = GenerateQuads(gTextures['hearts'], 10, 9)
+        ['hearts'] = GenerateQuads(gTextures['hearts'], 10, 9),
+        ['powerups'] = GenerateQuadsPowerups(gTextures['main'])
     }
-    
+
     -- initialize our virtual resolution, which will be rendered within our
     -- actual window no matter its dimensions
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
@@ -195,20 +196,20 @@ function love.draw()
     local backgroundWidth = gTextures['background']:getWidth()
     local backgroundHeight = gTextures['background']:getHeight()
 
-    love.graphics.draw(gTextures['background'], 
+    love.graphics.draw(gTextures['background'],
         -- draw at coordinates 0, 0
-        0, 0, 
+        0, 0,
         -- no rotation
         0,
         -- scale factors on X and Y axis so it fills the screen
         VIRTUAL_WIDTH / (backgroundWidth - 1), VIRTUAL_HEIGHT / (backgroundHeight - 1))
-    
+
     -- use the state machine to defer rendering to the current state we're in
     gStateMachine:render()
-    
+
     -- display FPS for debugging; simply comment out to remove
     displayFPS()
-    
+
     push:apply('end')
 end
 
@@ -269,7 +270,7 @@ end
 function renderHealth(health)
     -- start of our health rendering
     local healthX = VIRTUAL_WIDTH - 100
-    
+
     -- render health left
     for i = 1, health do
         love.graphics.draw(gTextures['hearts'], gFrames['hearts'][1], healthX, 4)
