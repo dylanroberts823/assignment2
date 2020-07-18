@@ -26,9 +26,15 @@ function ServeState:enter(params)
     self.level = params.level
     self.recoverPoints = params.recoverPoints
 
+
+    self.balls = {}
+
     -- init new ball (random color for fun)
     self.ball = Ball()
     self.ball.skin = math.random(7)
+
+    -- add the ball to the balls table
+    table.insert(self.balls, self.ball)
 
     -- if the powerup doesn't exist, init it and the powerBrick
     if params.powerup == nil then
@@ -62,7 +68,7 @@ function ServeState:update(dt)
             health = self.health,
             score = self.score,
             highScores = self.highScores,
-            ball = self.ball,
+            balls = self.balls,
             level = self.level,
             recoverPoints = self.recoverPoints,
             powerup = self.powerup,
