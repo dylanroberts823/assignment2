@@ -30,15 +30,20 @@ function ServeState:enter(params)
     self.ball = Ball()
     self.ball.skin = math.random(7)
 
-    -- init new powerup
-    self.powerup = Powerup()
+    -- if the powerup doesn't exist, init it and the powerBrick
+    if params.powerup == nil then
+      self.powerup = Powerup()
+      -- assign the powerup to a random brick
+      self.powerBrick = self.bricks[math.random(1, #self.bricks)]
 
-    -- assign the powerup to a random brick
-    self.powerBrick = self.bricks[math.random(1, #self.bricks)]
-
-    -- place the powerup's location in the center of the powerBrick
-    self.powerup.x = self.powerBrick.x + (self.powerBrick.width / 2) - 8
-    self.powerup.y = self.powerBrick.y
+      -- place the powerup's location in the center of the powerBrick
+      self.powerup.x = self.powerBrick.x + (self.powerBrick.width / 2) - 8
+      self.powerup.y = self.powerBrick.y
+    -- since the powerup exists, assign it
+    else
+      self.powerup = params.powerup
+      self.powerBrick = params.powerBrick
+    end
 end
 
 function ServeState:update(dt)
@@ -60,7 +65,8 @@ function ServeState:update(dt)
             ball = self.ball,
             level = self.level,
             recoverPoints = self.recoverPoints,
-            powerup = self.powerup
+            powerup = self.powerup,
+            powerBrick = self.powerBrick
         })
     end
 

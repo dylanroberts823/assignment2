@@ -29,15 +29,18 @@ function PlayState:enter(params)
     self.ball = params.ball
     self.level = params.level
     self.powerup = params.powerup
+    self.powerBrick = params.powerBrick
 
     self.recoverPoints = 5000
 
     -- give ball random starting velocity
-    self.ball.dx = math.random(-200, 200)
-    self.ball.dy = math.random(-50, -60)
+    --reset to make testing easier
+    self.ball.dx = math.random(0, 100)
+    self.ball.dy = math.random(100, 200)
 end
 
 function PlayState:update(dt)
+
     if self.paused then
         if love.keyboard.wasPressed('space') then
             self.paused = false
@@ -87,6 +90,18 @@ function PlayState:update(dt)
 
             -- trigger the brick's hit function, which removes it from play
             brick:hit()
+
+            --detect if the brick was removed
+            if not brick.inPlay then
+              --detect if the removed brick was the power brick
+              if brick.x == self.powerBrick.x and brick.y == self.powerBrick.y then
+                --since it was, indicate that the powerBrick is no longer in play
+                self.powerBrick.inPlay = false
+              end
+            end
+
+            --for testing purposes
+            print(self.powerBrickRemoved)
 
             -- if we have enough points, recover a point of health
             if self.score > self.recoverPoints then
@@ -165,6 +180,11 @@ function PlayState:update(dt)
         end
     end
 
+    --update the location of the powerup if the powerBrick was removed
+    if self.powerBrick.inPlay then
+      self.powerup:update(dt)
+    end
+
     -- if ball goes below bounds, revert to serve state and decrease health
     if self.ball.y >= VIRTUAL_HEIGHT then
         self.health = self.health - 1
@@ -183,7 +203,9 @@ function PlayState:update(dt)
                 score = self.score,
                 highScores = self.highScores,
                 level = self.level,
-                recoverPoints = self.recoverPoints
+                recoverPoints = self.recoverPoints,
+                powerup = self.powerup,
+                powerBrick = self.powerBrick,
             })
         end
     end
@@ -211,6 +233,7 @@ function PlayState:render()
 
     self.paddle:render()
     self.ball:render()
+    self.powerup:render()
 
     renderScore(self.score)
     renderHealth(self.health)

@@ -7,7 +7,7 @@ function Powerup:init()
 
     -- these variables are for keeping track of our velocity on both the
     -- Y axis, since the powerup can move in one dimension
-    self.dy = 0
+    self.dy = 16
 end
 
 --[[
@@ -32,9 +32,8 @@ function Powerup:collides(target)
 end
 
 function Powerup:update(dt)
-    -- moves the ball downwards
+    -- moves the powerup downwards
     self.y = self.y + self.dy * dt
-
 end
 
 function Powerup:render()
