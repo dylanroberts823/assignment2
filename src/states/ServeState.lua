@@ -38,7 +38,7 @@ function ServeState:enter(params)
 
     -- if the powerup doesn't exist, init it and the powerBrick
     if params.powerup == nil then
-      self.powerup = Powerup()
+      self.powerup = Powerup({powerupIndex = 1})
       -- assign the powerup to a random brick
       self.powerBrick = self.bricks[math.random(1, #self.bricks)]
 

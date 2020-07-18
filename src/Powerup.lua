@@ -1,6 +1,6 @@
 Powerup = Class{}
 
-function Powerup:init()
+function Powerup:init(params)
     -- simple positional and dimensional variables
     self.width = 8
     self.height = 8
@@ -8,6 +8,9 @@ function Powerup:init()
     -- these variables are for keeping track of our velocity on both the
     -- Y axis, since the powerup can move in one dimension
     self.dy = 16
+
+    -- set the powerup index
+    self.powerupIndex = params.powerupIndex
 end
 
 --[[
@@ -39,6 +42,6 @@ end
 function Powerup:render()
     -- gTexture is our global texture for all blocks
     -- gPowerupFrames is a table of quads mapping to only the first color in the texture
-    love.graphics.draw(gTextures['main'], gFrames['powerups'][1],
+    love.graphics.draw(gTextures['main'], gFrames['powerups'][self.powerupIndex],
         self.x, self.y)
 end
