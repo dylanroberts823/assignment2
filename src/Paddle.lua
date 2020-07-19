@@ -65,6 +65,15 @@ function Paddle:update(dt)
     else
         self.x = math.min(VIRTUAL_WIDTH - self.width, self.x + self.dx * dt)
     end
+
+    --function ensures that the sizes are accurate
+    local paddleWidths = {
+      [1] = 32,
+      [2] = 64,
+      [3] = 96,
+      [4] = 128,
+    }
+    self.width = paddleWidths[self.size]
 end
 
 --[[
