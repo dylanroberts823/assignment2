@@ -54,14 +54,17 @@ function Brick:init(x, y)
     -- used for coloring and score calculation
     self.tier = 0
     self.color = 1
-    
+
     self.x = x
     self.y = y
     self.width = 32
     self.height = 16
-    
+
     -- used to determine whether this brick should be rendered
     self.inPlay = true
+
+    -- used to track what power the brick has
+    self.powerup = nil
 
     -- particle system belonging to the brick, emitted on hit
     self.psystem = love.graphics.newParticleSystem(gTextures['particle'], 64)

@@ -89,6 +89,13 @@ function ServeState:render()
         brick:render()
     end
 
+    -- render all powerups systems
+    for k, brick in pairs(self.bricks) do
+        if brick.power then
+          brick.power:render()
+        end
+    end
+
     --render the powerup after the bricks so that it's visible
     self.powerup:render()
 

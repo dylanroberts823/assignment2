@@ -125,6 +125,22 @@ function LevelMaker.createMap(level)
     if #bricks == 0 then
         return self.createMap(level)
     else
-        return bricks
+      --create the double powerup that goes in each level
+      -- select a random brick
+      local randomBrickIndex = math.random(#bricks)
+      local randomBrick = bricks[randomBrickIndex]
+
+      -- create an appropriate powerup
+      -- select the powerup
+      local powerupDouble = Powerup({powerupIndex = 1})
+
+      -- place the powerup's location in the center of the powerBrick
+      powerupDouble.x = randomBrick.x + (randomBrick.width / 2) - 8
+      powerupDouble.y = randomBrick.y
+
+      --assign the powerup to the brick
+      bricks[randomBrickIndex].power = powerupDouble
+
+      return bricks
     end
 end

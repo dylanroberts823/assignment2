@@ -11,6 +11,19 @@ function Powerup:init(params)
 
     -- set the powerup index
     self.powerupIndex = params.powerupIndex
+
+
+end
+
+function Powerup:getName()
+  --set the name according to the powerupIndex
+  local powerupNames = {
+    [1] = "Double",
+    [9] = "Key",
+  }
+
+  local name = powerupNames[self.powerupIndex]
+  return name
 end
 
 --[[
