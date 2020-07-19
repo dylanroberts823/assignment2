@@ -88,11 +88,6 @@ end
     changing its color otherwise.
 ]]
 function Brick:hit()
-  --since it's the sixth color, change it to the first one
-  if self.color == 6 then
-    self.color = 1
-    self.tier = 0
-  end
     -- set the particle system to interpolate between two colors; in this case, we give
     -- it our self.color but with varying alpha; brighter for higher tiers, fading to 0
     -- over the particle's lifetime (the second color)

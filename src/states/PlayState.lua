@@ -34,9 +34,8 @@ function PlayState:enter(params)
     self.recoverPoints = 5000
 
     -- give ball random starting velocity
-    --reset to make testing easier
     for l, ball in pairs(self.balls) do
-      ball.dx = math.random(-5, 5)
+      ball.dx = math.random(-50, 50)
       ball.dy = math.random(100, 200)
     end
 
@@ -125,7 +124,8 @@ function PlayState:update(dt)
                   balls = {self.balls[1]},
                   recoverPoints = self.recoverPoints,
                   --reset hasKey to false
-                  hasKey = false
+                  hasKey = false,
+                  upgradePaddleScore = self.upgradePaddleScore,
               })
           end
 
@@ -255,7 +255,15 @@ function PlayState:update(dt)
             gSounds["score"]:play()
             brick.power.y = brick.power.y + 100
             self.hasKey = true
+            self.score = self.score + 500
 
+            --change the locked brick into a normal brick
+            for l, brick in pairs(self.bricks) do
+              if brick.color == 6 and brick.tier == 3 then
+                brick.color = 1
+                brick.tier = math.random(3)
+              end
+            end
           end
 
         end

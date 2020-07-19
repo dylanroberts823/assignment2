@@ -34,8 +34,7 @@ function LevelMaker.createMap(level)
     local bricks = {}
 
     -- randomly choose the number of rows
-    -- modified to make it easier to test
-    local numRows = math.random(1, 2)
+    local numRows = math.random(1, 1 + level % 5)
 
     -- randomly choose the number of columns, ensuring odd
     local numCols = math.random(7, 13)
@@ -43,8 +42,7 @@ function LevelMaker.createMap(level)
 
     -- highest possible spawned brick color in this level; ensure we
     -- don't go above 3
-    -- temporary modification for testing
-    local highestTier = math.min(0, math.floor(level / 5))
+    local highestTier = math.min(1, math.floor(level / 5))
 
     -- highest color of the highest tier, no higher than 5
     local highestColor = math.min(0, level % 5 + 3)
@@ -144,8 +142,7 @@ function LevelMaker.createMap(level)
       bricks[doubleBrickIndex].power = powerupDouble
 
       --one in three times, generate a locked brick and powerup
-      --TESTING
-      if math.random(1) == 1 then
+      if math.random(3) == 1 then
         local lockedBrickIndex = math.random(#bricks)
         local keyBrickIndex = math.random(#bricks)
         -- ensure that locked brick index, doubleBrickIndex and keyBrickIndex are all different
