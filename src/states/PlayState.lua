@@ -98,15 +98,6 @@ function PlayState:update(dt)
           -- trigger the brick's hit function, which removes it from play
           brick:hit()
 
-          --detect if the brick was removed
-          if not brick.inPlay then
-            --detect if the removed brick was the power brick
-            if brick.x == self.powerBrick.x and brick.y == self.powerBrick.y then
-              --since it was, indicate that the powerBrick is no longer in play
-              self.powerBrick.inPlay = false
-            end
-          end
-
           -- if we have enough points, recover a point of health
           if self.score > self.recoverPoints then
               -- can't go above 3 health
@@ -220,19 +211,16 @@ function PlayState:update(dt)
       end
     end
 
-    --update the location of the powerup if the powerBrick was removed
-    if not self.powerBrick.inPlay then
-      self.powerup:update(dt)
-    end
-
+    --functions to continuously modify powers
     for l, brick in pairs(self.bricks) do
+      --if the power is released from the brick
       if brick.power ~=nil and brick.inPlay == false then
         --update the position of the powerup, since it's brick is destroyed
         brick.power:update(dt)
         -- apply the power if the power collides with the paddle
-        if brick.powerup:collides(self.paddle) then
+        if brick.power:collides(self.paddle) then
           --hide the powerup
-          brick.powerup.y = brick.powerup.y + 100
+          brick.power.y = brick.power.y + 100
 
           --bring in the second ball with a similar location as the initial ball
           local ball2 = Ball()
