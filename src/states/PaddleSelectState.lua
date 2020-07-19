@@ -54,6 +54,7 @@ function PaddleSelectState:update(dt)
             level = 1,
             recoverPoints = 5000,
             hasKey = false,
+            upgradePaddleScore = 100,
         })
     end
 

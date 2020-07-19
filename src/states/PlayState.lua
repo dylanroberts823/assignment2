@@ -29,9 +29,9 @@ function PlayState:enter(params)
     self.balls = params.balls
     self.level = params.level
     self.hasKey = params.hasKey
+    self.upgradePaddleScore = params.upgradePaddleScore
 
     self.recoverPoints = 5000
-    self.upgradePaddleScore = 100
 
     -- give ball random starting velocity
     --reset to make testing easier
@@ -129,6 +129,18 @@ function PlayState:update(dt)
               })
           end
 
+          -- upgrade size code
+          -- if the score reaches the critical amount
+          if self.score >= self.upgradePaddleScore then
+            -- upgrade the paddle if it's not already at max
+            if self.paddle.size < 4 then
+              self.paddle.size = self.paddle.size + 1
+            end
+
+            --increase the upgrade paddle score according to the current size
+            self.upgradePaddleScore = self.score + self.paddle.size * 200
+          end
+
           --
           -- collision code for bricks
           --d
@@ -209,6 +221,7 @@ function PlayState:update(dt)
             level = self.level,
             recoverPoints = self.recoverPoints,
             hasKey = self.hasKey,
+            upgradePaddleScore = self.upgradePaddleScore,
           })
         end
       end
@@ -254,17 +267,6 @@ function PlayState:update(dt)
     -- for rendering particle systems
     for k, brick in pairs(self.bricks) do
         brick:update(dt)
-    end
-
-    -- if the score reaches the critical amount
-    if self.score >= self.upgradePaddleScore then
-      -- upgrade the paddle if it's not already at max
-      if self.paddle.size < 4 then
-        self.paddle.size = self.paddle.size + 1
-      end
-
-      --increase the upgrade paddle score according to the current size
-      self.upgradePaddleScore = self.score + self.paddle.size * 1000
     end
 
     if love.keyboard.wasPressed('escape') then
