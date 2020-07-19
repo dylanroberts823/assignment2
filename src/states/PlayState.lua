@@ -238,7 +238,11 @@ function PlayState:update(dt)
 
             table.insert(self.balls, ball2)
           elseif brick.power:getName() == "Key" then
+            gSounds["paddle-hit"]:play()
+            gSounds["score"]:play()
+            brick.power.y = brick.power.y + 100
             self.hasKey = true
+
           end
 
         end
