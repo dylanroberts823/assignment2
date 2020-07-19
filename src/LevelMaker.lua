@@ -134,7 +134,7 @@ function LevelMaker.createMap(level)
       -- select the powerup
       --SHOULD PUT IN TABLE
       local powerupDouble = Powerup({powerupIndex = 1})
-      local powerupKey = Powerup({powerupIndex = 9})
+      local powerupKey = Powerup({powerupIndex = 10})
 
       -- place the powerup's location in the center of the powerBrick
       powerupDouble.x = doubleBrick.x + (doubleBrick.width / 2) - 8

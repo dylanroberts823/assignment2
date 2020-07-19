@@ -76,6 +76,8 @@ function ServeState:render()
     -- render all powerups systems
     for k, brick in pairs(self.bricks) do
         if brick.power then
+          brick.power.x = brick.x + 8
+          brick.power.y = brick.y
           brick.power:render()
         end
     end
