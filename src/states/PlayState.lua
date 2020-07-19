@@ -91,11 +91,13 @@ function PlayState:update(dt)
         -- only check collision if we're in play
         if brick.inPlay and ball:collides(brick) then
 
-          -- add to score
-          self.score = self.score + (brick.tier * 200 + brick.color * 25)
-
           -- trigger the brick's hit function, which removes it from play
-          brick:hit()
+          -- if it is either not a locked brick or it is but the user has the key
+          if (brick.color == 6 and brick.tier == 3) == false or self.hasKey == true then
+            -- add to score
+            self.score = self.score + (brick.tier * 200 + brick.color * 25)
+            brick:hit()
+          end
 
           -- if we have enough points, recover a point of health
           if self.score > self.recoverPoints then
