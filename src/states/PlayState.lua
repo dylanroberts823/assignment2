@@ -30,6 +30,7 @@ function PlayState:enter(params)
     self.level = params.level
     self.powerup = params.powerup
     self.powerBrick = params.powerBrick
+    self.hasKey = params.hasKey
 
     self.recoverPoints = 5000
     self.upgradePaddleScore = 100
@@ -120,14 +121,17 @@ function PlayState:update(dt)
                   health = self.health,
                   score = self.score,
                   highScores = self.highScores,
-                  balls = self.balls,
-                  recoverPoints = self.recoverPoints
+                  --reset the number of balls to 1
+                  balls = self.balls[1],
+                  recoverPoints = self.recoverPoints,
+                  --reset hasKey to false
+                  hasKey = false
               })
           end
 
           --
           -- collision code for bricks
-          --
+          --d
           -- we check to see if the opposite side of our velocity is outside of the brick;
           -- if it is, we trigger a collision on that side. else we're within the X + width of
           -- the brick and should check to see if the top or bottom edge is outside of the brick,
@@ -206,6 +210,7 @@ function PlayState:update(dt)
             recoverPoints = self.recoverPoints,
             powerup = self.powerup,
             powerBrick = self.powerBrick,
+            hasKey = self.hasKey,
           })
         end
       end
@@ -219,20 +224,25 @@ function PlayState:update(dt)
         brick.power:update(dt)
         -- apply the power if the power collides with the paddle
         if brick.power:collides(self.paddle) then
-          --hide the powerup
-          brick.power.y = brick.power.y + 100
+          if brick.power:getName() == "Double" then
+            --hide the powerup
+            brick.power.y = brick.power.y + 100
 
-          --bring in the second ball with a similar location as the initial ball
-          local ball2 = Ball()
-          ball2.skin = math.random(7)
-          ball2.x = self.balls[1].x
-          ball2.y = self.balls[1].y
+            --bring in the second ball with a similar location as the initial ball
+            local ball2 = Ball()
+            ball2.skin = math.random(7)
+            ball2.x = self.balls[1].x
+            ball2.y = self.balls[1].y
 
-          --but a different x velocity
-          ball2.dx = self.balls[1].dx + math.random(-100, 100)
-          ball2.dy = self.balls[1].dy
+            --but a different x velocity
+            ball2.dx = self.balls[1].dx + math.random(-100, 100)
+            ball2.dy = self.balls[1].dy
 
-          table.insert(self.balls, ball2)
+            table.insert(self.balls, ball2)
+          elseif brick.power:getName() == "Key" then
+            self.hasKey = true
+          end
+
         end
       end
     end
@@ -302,6 +312,5 @@ function PlayState:checkVictory()
             return false
         end
     end
-
     return true
 end
