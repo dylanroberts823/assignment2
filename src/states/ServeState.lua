@@ -35,21 +35,6 @@ function ServeState:enter(params)
 
     -- add the ball to the balls table
     table.insert(self.balls, self.ball)
-
-    -- if the powerup doesn't exist, init it and the powerBrick
-    if params.powerup == nil then
-      self.powerup = Powerup({powerupIndex = 1})
-      -- assign the powerup to a random brick
-      self.powerBrick = self.bricks[math.random(1, #self.bricks)]
-
-      -- place the powerup's location in the center of the powerBrick
-      self.powerup.x = self.powerBrick.x + (self.powerBrick.width / 2) - 8
-      self.powerup.y = self.powerBrick.y
-    -- since the powerup exists, assign it
-    else
-      self.powerup = params.powerup
-      self.powerBrick = params.powerBrick
-    end
 end
 
 function ServeState:update(dt)
@@ -71,8 +56,6 @@ function ServeState:update(dt)
             balls = self.balls,
             level = self.level,
             recoverPoints = self.recoverPoints,
-            powerup = self.powerup,
-            powerBrick = self.powerBrick,
             hasKey = self.hasKey
         })
     end
@@ -96,9 +79,6 @@ function ServeState:render()
           brick.power:render()
         end
     end
-
-    --render the powerup after the bricks so that it's visible
-    self.powerup:render()
 
     renderScore(self.score)
     renderHealth(self.health)

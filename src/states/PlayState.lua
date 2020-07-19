@@ -28,8 +28,6 @@ function PlayState:enter(params)
     self.highScores = params.highScores
     self.balls = params.balls
     self.level = params.level
-    self.powerup = params.powerup
-    self.powerBrick = params.powerBrick
     self.hasKey = params.hasKey
 
     self.recoverPoints = 5000
@@ -208,8 +206,6 @@ function PlayState:update(dt)
             highScores = self.highScores,
             level = self.level,
             recoverPoints = self.recoverPoints,
-            powerup = self.powerup,
-            powerBrick = self.powerBrick,
             hasKey = self.hasKey,
           })
         end
@@ -293,8 +289,6 @@ function PlayState:render()
     for l, ball in pairs(self.balls) do
       ball:render()
     end
-
-    self.powerup:render()
 
     renderScore(self.score)
     renderHealth(self.health)
