@@ -17,24 +17,36 @@
 ServeState = Class{__includes = BaseState}
 
 function ServeState:enter(params)
-    -- grab game state from params
-    self.paddle = params.paddle
-    self.bricks = params.bricks
-    self.health = params.health
-    self.score = params.score
-    self.highScores = params.highScores
-    self.level = params.level
-    self.recoverPoints = params.recoverPoints
-    self.hasKey = params.hasKey
+  -- grab game state from params
+  self.paddle = params.paddle
+  self.bricks = params.bricks
+  self.health = params.health
+  self.score = params.score
+  self.highScores = params.highScores
+  self.level = params.level
+  self.recoverPoints = params.recoverPoints
+  self.hasKey = params.hasKey
 
-    self.balls = {}
+  self.balls = {}
 
-    -- init new ball (random color for fun)
-    self.ball = Ball()
-    self.ball.skin = math.random(7)
+  -- init new ball (random color for fun)
+  self.ball = Ball()
+  self.ball.skin = math.random(7)
 
-    -- add the ball to the balls table
-    table.insert(self.balls, self.ball)
+  -- add the ball to the balls table
+  table.insert(self.balls, self.ball)
+
+  -- init the powerups, if necessary
+  -- render all powerups systems
+  for k, brick in pairs(self.bricks) do
+    --if the brick has a power
+    if not (brick.power == nil or brick.power == '') then
+      if brick.power.x == nil then
+        brick.power.x = brick.x + 8
+        brick.power.y = brick.y
+      end
+    end
+  end
 end
 
 function ServeState:update(dt)
@@ -71,13 +83,7 @@ function ServeState:render()
 
     for k, brick in pairs(self.bricks) do
         brick:render()
-    end
-
-    -- render all powerups systems
-    for k, brick in pairs(self.bricks) do
-        if brick.power then
-          brick.power.x = brick.x + 8
-          brick.power.y = brick.y
+        if brick.power ~= nil then
           brick.power:render()
         end
     end
