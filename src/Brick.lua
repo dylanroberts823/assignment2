@@ -76,7 +76,7 @@ function Brick:init(x, y)
     self.psystem:setParticleLifetime(0.5, 1)
 
     -- give it an acceleration of anywhere between X1,Y1 and X2,Y2 (0, 0) and (80, 80) here
-    -- gives generally downward 
+    -- gives generally downward
     self.psystem:setLinearAcceleration(-15, 0, 15, 80)
 
     -- spread of particles; normal looks more natural than uniform
@@ -88,6 +88,11 @@ end
     changing its color otherwise.
 ]]
 function Brick:hit()
+  --since it's the sixth color, change it to the first one
+  if self.color == 6 then
+    self.color = 1
+    self.tier = 0
+  end
     -- set the particle system to interpolate between two colors; in this case, we give
     -- it our self.color but with varying alpha; brighter for higher tiers, fading to 0
     -- over the particle's lifetime (the second color)
@@ -109,6 +114,8 @@ function Brick:hit()
 
     -- if we're at a higher tier than the base, we need to go down a tier
     -- if we're already at the lowest color, else just go down a color
+    -- if the brick is on the sixth tier, it's a special brick, so remove immediately
+
     if self.tier > 0 then
         if self.color == 1 then
             self.tier = self.tier - 1
@@ -138,7 +145,7 @@ end
 
 function Brick:render()
     if self.inPlay then
-        love.graphics.draw(gTextures['main'], 
+        love.graphics.draw(gTextures['main'],
             -- multiply color by 4 (-1) to get our color offset, then add tier to that
             -- to draw the correct tier and color brick onto the screen
             gFrames['bricks'][1 + ((self.color - 1) * 4) + self.tier],

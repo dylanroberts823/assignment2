@@ -127,19 +127,42 @@ function LevelMaker.createMap(level)
     else
       --create the double powerup that goes in each level
       -- select a random brick
-      local randomBrickIndex = math.random(#bricks)
-      local randomBrick = bricks[randomBrickIndex]
+      local doubleBrickIndex = math.random(#bricks)
+      local doubleBrick = bricks[doubleBrickIndex]
 
       -- create an appropriate powerup
       -- select the powerup
+      --SHOULD PUT IN TABLE
       local powerupDouble = Powerup({powerupIndex = 1})
+      local powerupKey = Powerup({powerupIndex = 9})
 
       -- place the powerup's location in the center of the powerBrick
-      powerupDouble.x = randomBrick.x + (randomBrick.width / 2) - 8
-      powerupDouble.y = randomBrick.y
+      powerupDouble.x = doubleBrick.x + (doubleBrick.width / 2) - 8
+      powerupDouble.y = doubleBrick.y
 
       --assign the powerup to the brick
-      bricks[randomBrickIndex].power = powerupDouble
+      bricks[doubleBrickIndex].power = powerupDouble
+
+      --one in three times, generate a locked brick and powerup
+      --TESTING
+      if math.random(1) == 1 then
+        local lockedBrickIndex = math.random(#bricks)
+        local keyBrickIndex = math.random(#bricks)
+        -- ensure that locked brick index, doubleBrickIndex and keyBrickIndex are all different
+        while lockedBrickIndex == doubleBrickIndex do
+          newdoubleBrickIndex = math.random(#bricks)
+        end
+        while keyBrickIndex == lockedBrickIndex or keyBrickIndex == doubleBrickIndex do
+          keyBrickIndex = math.random(#bricks)
+        end
+
+        --assign the keyed brick
+        bricks[keyBrickIndex].power = powerupKey
+
+        --assign the locked brick
+        bricks[lockedBrickIndex].color = 6
+        bricks[lockedBrickIndex].tier = 3
+      end
 
       return bricks
     end
