@@ -122,7 +122,7 @@ function PlayState:update(dt)
                   score = self.score,
                   highScores = self.highScores,
                   --reset the number of balls to 1
-                  balls = self.balls[1],
+                  balls = {self.balls[1]},
                   recoverPoints = self.recoverPoints,
                   --reset hasKey to false
                   hasKey = false
