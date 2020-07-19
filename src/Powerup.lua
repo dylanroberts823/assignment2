@@ -2,8 +2,8 @@ Powerup = Class{}
 
 function Powerup:init(params)
     -- simple positional and dimensional variables
-    self.width = 8
-    self.height = 8
+    self.width = 16
+    self.height = 16
 
     -- these variables are for keeping track of our velocity on both the
     -- Y axis, since the powerup can move in one dimension
